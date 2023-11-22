@@ -7,7 +7,7 @@ package com.spiderweb;
  *
  * <p>Example Usage:
  * <blockquote><pre>
- * SpiderWebNode&lt;Integer&gt; node = new SpiderWebNode<>(42, null, null);
+ * SpiderWebNode&lt;Integer&gt; node = new SpiderWebNode&lt;&gt;(42, null, null);
  * </pre></blockquote>
  *
  * @param <E> the type of elements stored in the SpiderWebNode
