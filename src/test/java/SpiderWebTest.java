@@ -85,6 +85,67 @@ public class SpiderWebTest {
     }
 
     /**
+     * Test case for adding elements using the addFirst method.
+     */
+    @Test
+    public void testAddFirst() {
+        SpiderWeb<String> spiderWeb = new SpiderWeb<>();
+        spiderWeb.addFirst("C");
+        spiderWeb.addFirst("B");
+        spiderWeb.addFirst("A");
+
+        assertEquals(3, spiderWeb.size());
+        assertEquals("A", spiderWeb.getFirst().getValue());
+        assertEquals("C", spiderWeb.getLast().getValue());
+        assertNull(spiderWeb.getFirst().getPrevNode());
+        assertNotNull(spiderWeb.getFirst().getNextNode());
+        assertNull(spiderWeb.getFirst().getPrevLevelNode());
+        assertNull(spiderWeb.getFirst().getNextLevelNode());
+        assertNotNull(spiderWeb.getLast().getPrevNode());
+        assertNull(spiderWeb.getLast().getNextNode());
+        assertNull(spiderWeb.getLast().getPrevLevelNode());
+        assertNull(spiderWeb.getLast().getNextLevelNode());
+    }
+
+    /**
+     * Test case for adding an element to an empty SpiderWeb using the addFirst method.
+     */
+    @Test
+    public void testAddFirstOnEmptySpiderWeb() {
+        SpiderWeb<Integer> spiderWeb = new SpiderWeb<>();
+        spiderWeb.addFirst(42);
+
+        assertEquals(1, spiderWeb.size());
+        assertEquals(42, spiderWeb.getFirst().getValue());
+        assertEquals(42, spiderWeb.getLast().getValue());
+    }
+
+    /**
+     * Test case for adding elements to exceed the maximum index for a level using the addFirst method.
+     */
+    @Test
+    public void testAddFirstOnSpiderWebWithMaxElements() {
+        SpiderWeb<String> spiderWeb = new SpiderWeb<>(2);
+        spiderWeb.addFirst("C");
+        spiderWeb.addFirst("B");
+        spiderWeb.addFirst("A");
+
+        spiderWeb.addFirst("D");
+        assertEquals(4, spiderWeb.size());
+        assertEquals("D", spiderWeb.getFirst().getValue());
+        assertEquals("C", spiderWeb.getLast().getValue());
+        assertEquals(1, spiderWeb.getLevel());
+        assertNull(spiderWeb.getFirst().getPrevNode());
+        assertNotNull(spiderWeb.getFirst().getNextNode());
+        assertNull(spiderWeb.getFirst().getPrevLevelNode());
+        assertNotNull(spiderWeb.getFirst().getNextLevelNode());
+        assertNotNull(spiderWeb.getLast().getPrevNode());
+        assertNull(spiderWeb.getLast().getNextNode());
+        assertNotNull(spiderWeb.getLast().getPrevLevelNode());
+        assertNull(spiderWeb.getLast().getNextLevelNode());
+    }
+
+    /**
      * Test case for the level and index of an empty SpiderWeb.
      */
     @Test
