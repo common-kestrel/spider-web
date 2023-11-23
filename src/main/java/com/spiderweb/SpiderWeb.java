@@ -1,5 +1,7 @@
 package com.spiderweb;
 
+import org.w3c.dom.Node;
+
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
@@ -361,6 +363,29 @@ public class SpiderWeb<E> {
         this.size--;
 
         return lastValue;
+    }
+
+    /**
+     * Removes all elements from the SpiderWeb.
+     * After calling this method, the SpiderWeb will have no elements.
+     */
+    public void clear() {
+        for(SpiderWebNode<E> node = this.first; node != null; ) {
+            SpiderWebNode<E> next = node.getNextNode();
+            node.setValue(null);
+            node.setPrevNode(null);
+            node.setNextNode(null);
+            node.setPrevLevelNode(null);
+            node.setNextLevelNode(null);
+            node = next;
+        }
+
+        this.first = null;
+        this.last = null;
+        this.levelPointer = null;
+        this.index = 0;
+        this.level = 0;
+        this.size = 0;
     }
 
     /**
