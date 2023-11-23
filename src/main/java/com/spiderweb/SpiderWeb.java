@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
  *
  * <p>Usage Example:
  * <blockquote><pre>
- * SpiderWeb&lt;Integer&gt; spiderWeb = new SpiderWeb<>();
+ * SpiderWeb&lt;Integer&gt; spiderWeb = new SpiderWeb&lt;&gt;();
  * spiderWeb.add(1);
  * spiderWeb.add(2);
  * spiderWeb.add(3);
@@ -26,6 +26,8 @@ import java.util.NoSuchElementException;
  * @since November 21, 2023
  */
 public class SpiderWeb<E> {
+    // Private fields for managing the spider web structure
+
     private SpiderWebNode<E> first;
     private SpiderWebNode<E> levelPointer;
     private SpiderWebNode<E> last;
@@ -36,26 +38,56 @@ public class SpiderWeb<E> {
     private int size;
     private final int maxElementPerLevel;
 
+    /**
+     * Constructs a SpiderWeb with a default maximum number of elements per level (6).
+     */
     public SpiderWeb() {
         this.maxElementPerLevel = 6;
     }
 
+    /**
+     * Constructs a SpiderWeb with a specified maximum number of elements per level.
+     *
+     * @param maxElementPerLevel The maximum number of elements allowed in each level.
+     */
     public SpiderWeb(int maxElementPerLevel) {
         this.maxElementPerLevel = maxElementPerLevel;
     }
 
+    // Getter methods for accessing SpiderWeb properties
+
+    /**
+     * Gets the first node in the SpiderWeb.
+     *
+     * @return The first node in the SpiderWeb.
+     */
     public SpiderWebNode<E> getFirst() {
         return first;
     }
 
+    /**
+     * Gets the current level pointer in the SpiderWeb.
+     *
+     * @return The current level pointer in the SpiderWeb.
+     */
     public SpiderWebNode<E> getLevelPointer() {
         return levelPointer;
     }
 
+    /**
+     * Gets the last node in the SpiderWeb.
+     *
+     * @return The last node in the SpiderWeb.
+     */
     public SpiderWebNode<E> getLast() {
         return last;
     }
 
+    /**
+     * Gets the last level of the SpiderWeb.
+     *
+     * @return The last level of the SpiderWeb.
+     */
     public int getLevel() {
         if (this.first == null) {
             return -1;
@@ -66,6 +98,11 @@ public class SpiderWeb<E> {
         return level;
     }
 
+    /**
+     * Gets the last index of the SpiderWeb.
+     *
+     * @return The last index of the SpiderWeb.
+     */
     public int getIndex() {
         if (this.first == null) {
             return -1;
@@ -75,6 +112,8 @@ public class SpiderWeb<E> {
         }
         return index - 1;
     }
+
+    // Private helper methods for managing temporary variables
 
     private void resetTmpVariables(){
         this.tmpLevel = 0;
@@ -105,10 +144,59 @@ public class SpiderWeb<E> {
         }
     }
 
+    // Other public methods...
+
+    /**
+     * Gets the maximum index for a specified level in the SpiderWeb.
+     *
+     * @param level The level for which to retrieve the maximum index.
+     * @return The maximum index for the specified level.
+     * @throws IllegalArgumentException If the specified level is negative or exceeds the maximum level in the SpiderWeb.
+     * @throws IllegalStateException If the SpiderWeb is empty, and the maximum index cannot be determined.
+     */
+    public int getMaximumIndexForLevel(int level) throws IllegalArgumentException, IllegalStateException {
+        if (level < 0) {
+            throw new IllegalArgumentException("Invalid level: Level cannot be negative.");
+        }
+        if (this.first == null) {
+            throw new IllegalStateException("Cannot get maximum index for level on an empty SpiderWeb");
+        }
+        if (level > this.getLevel()){
+            throw new IllegalArgumentException(String.format("Invalid level: %d exceeds the maximum level %d.", level, this.getLevel()));
+        }
+        if (level < this.getLevel()){
+            return this.maxElementPerLevel - 1;
+        }
+        return this.getIndex();
+    }
+
+    /**
+     * Returns the size of the SpiderWeb, indicating the total number of elements stored.
+     *
+     * @return The size of the SpiderWeb.
+     */
     public int size() {
         return this.size;
     }
 
+    /**
+     * Prints the elements of the SpiderWeb along with their levels and indices.
+     */
+    public void print(){
+        SpiderWebNode<E> current = this.first;
+        this.resetTmpVariables();
+        while (current != null){
+            System.out.println("value: " + current.getValue() + ", level: " + this.tmpLevel + ", index: " + this.tmpIndex);
+            current = current.getNextNode();
+            this.nextIndex();
+        }
+    }
+
+    /**
+     * Adds an element to the SpiderWeb.
+     *
+     * @param value The value to be added to the SpiderWeb.
+     */
     public void add(E value) {
         final SpiderWebNode<E> newNode = new SpiderWebNode<>(value, this.last, this.levelPointer);
         if (this.first == null){
@@ -133,32 +221,12 @@ public class SpiderWeb<E> {
         this.size++;
     }
 
-    public int getMaximumIndexForLevel(int level) throws Exception {
-        if (level < 0) {
-            throw new IllegalArgumentException("Invalid level: Level cannot be negative.");
-        }
-        if (this.first == null) {
-            throw new IllegalStateException("Cannot get maximum index for level on an empty spider web");
-        }
-        if (level > this.getLevel()){
-            throw new IllegalArgumentException(String.format("Invalid level: %d exceeds the maximum level %d.", level, this.getLevel()));
-        }
-        if (level < this.getLevel()){
-            return this.maxElementPerLevel - 1;
-        }
-        return this.getIndex();
-    }
-
-    public void print(){
-        SpiderWebNode<E> current = this.first;
-        this.resetTmpVariables();
-        while (current != null){
-            System.out.println("value: " + current.getValue() + ", level: " + this.tmpLevel + ", index: " + this.tmpIndex);
-            current = current.getNextNode();
-            this.nextIndex();
-        }
-    }
-
+    /**
+     * Searches for the specified element and returns its level and index in the SpiderWeb.
+     *
+     * @param e The element to search for in the SpiderWeb.
+     * @return A HashMap containing the level and index of the specified element.
+     */
     public HashMap<String, Integer> indexOf(E e){
         SpiderWebNode<E> current = this.first;
         HashMap<String, Integer> hashMap = new HashMap<>();
@@ -177,6 +245,12 @@ public class SpiderWeb<E> {
         return hashMap;
     }
 
+    /**
+     * Searches for the last occurrence of the specified element and returns its level and index in the SpiderWeb.
+     *
+     * @param e The element to search for in the SpiderWeb.
+     * @return A HashMap containing the level and index of the last occurrence of the specified element.
+     */
     public HashMap<String, Integer> lastIndexOf(E e) {
         SpiderWebNode<E> current = this.last;
         HashMap<String, Integer> hashMap = new HashMap<>();
@@ -229,6 +303,11 @@ public class SpiderWeb<E> {
         return lastValue;
     }
 
+    /**
+     * Returns a string representation of the SpiderWeb, including its current level, index, size, and maximum elements per level.
+     *
+     * @return A string representation of the SpiderWeb.
+     */
     @Override
     public String toString() {
         return "SpiderWeb{" +
