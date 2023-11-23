@@ -1,7 +1,5 @@
 package com.spiderweb;
 
-import org.w3c.dom.Node;
-
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
@@ -159,6 +157,10 @@ public class SpiderWeb<E> {
 
     private void incrementSize() {
         this.size++;
+    }
+
+    private boolean isValidLevelAndIndex(int level, int index) {
+        return (level >= 0 && level <= this.getLevel()) && (index >= 0 && index <= this.getMaximumIndexForLevel(level));
     }
 
     // Other public methods...
@@ -329,6 +331,33 @@ public class SpiderWeb<E> {
         }
 
         return hashMap;
+    }
+
+    /**
+     * Sets the element at the specified level and index in the SpiderWeb, replacing any existing element.
+     * Returns the previous value at the specified position.
+     *
+     * @param level   The level at which to set the element.
+     * @param index   The index within the specified level to set the element.
+     * @param element The new element to be set at the specified level and index.
+     * @return The previous value at the specified level and index.
+     * @throws IllegalArgumentException If the provided level or index is invalid.
+     * @throws IllegalStateException    If the operation fails to set the element, which should not occur under normal conditions.
+     */
+    public E set(int level, int index, E element) {
+        if (!this.isValidLevelAndIndex(level, index)) {
+            throw new IllegalArgumentException("Invalid level or index. Level: " + level + ", Index: " + index);
+        }
+        this.resetTmpVariables();
+        for (SpiderWebNode<E> node = this.first; node != null; node = node.getNextNode()) {
+            if (this.tmpLevel == level && this.tmpIndex == index) {
+                E oldValue = node.getValue();
+                node.setValue(element);
+                return oldValue;
+            }
+            this.nextIndex();
+        }
+        throw new IllegalStateException("Failed to set element. Level: " + level + ", Index: " + index);
     }
 
     /**

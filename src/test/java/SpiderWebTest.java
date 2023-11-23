@@ -412,29 +412,55 @@ public class SpiderWebTest {
     }
 
     /**
-     * Test case for the toString method when the SpiderWeb is empty.
+     * Test case for setting an element at a valid level and index.
      */
     @Test
-    public void testToStringEmptySpiderWeb() {
+    void testSetValidLevelAndIndex() {
         SpiderWeb<String> spiderWeb = new SpiderWeb<>();
+        spiderWeb.add("A");
+        spiderWeb.add("B");
 
-        String result = spiderWeb.toString();
-        assertEquals("SpiderWeb{level=-1, index=-1, size=0, maxElementPerLevel=6}", result);
+        String oldValue = spiderWeb.set(0, 1, "X");
+
+        assertEquals("B", oldValue);
+        assertEquals("X", spiderWeb.getFirst().getNextNode().getValue());
     }
 
     /**
-     * Test case for the toString method when the SpiderWeb has elements.
+     * Test case for setting an element with an invalid level.
      */
     @Test
-    public void testToStringNonEmptySpiderWeb() {
+    void testSetInvalidLevel() {
         SpiderWeb<Integer> spiderWeb = new SpiderWeb<>();
-        spiderWeb.add(42);
-        spiderWeb.add(123);
+        spiderWeb.add(1);
 
-        String result = spiderWeb.toString();
-        assertEquals("SpiderWeb{level=0, index=1, size=2, maxElementPerLevel=6}", result);
+        assertThrows(IllegalArgumentException.class, () -> spiderWeb.set(-1, 0, 42));
+        assertThrows(IllegalArgumentException.class, () -> spiderWeb.set(1, 0, 42));
     }
 
+    /**
+     * Test case for setting an element with an invalid index.
+     */
+    @Test
+    void testSetInvalidIndex() {
+        SpiderWeb<Integer> spiderWeb = new SpiderWeb<>();
+        spiderWeb.add(1);
+
+        assertThrows(IllegalArgumentException.class, () -> spiderWeb.set(0, -1, 42));
+        assertThrows(IllegalArgumentException.class, () -> spiderWeb.set(0, 1, 42));
+    }
+
+    /**
+     * Test case for setting an element with both an invalid level and index.
+     */
+    @Test
+    void testSetInvalidLevelAndIndex() {
+        SpiderWeb<Integer> spiderWeb = new SpiderWeb<>();
+        spiderWeb.add(1);
+
+        assertThrows(IllegalArgumentException.class, () -> spiderWeb.set(-1, -1, 42));
+        assertThrows(IllegalArgumentException.class, () -> spiderWeb.set(1, 1, 42));
+    }
 
     /**
      * Test case for removing the last element from an empty SpiderWeb.
@@ -512,6 +538,29 @@ public class SpiderWebTest {
         assertEquals(-1, spiderWeb.getLevel());
     }
 
+    /**
+     * Test case for the toString method when the SpiderWeb is empty.
+     */
+    @Test
+    public void testToStringEmptySpiderWeb() {
+        SpiderWeb<String> spiderWeb = new SpiderWeb<>();
+
+        String result = spiderWeb.toString();
+        assertEquals("SpiderWeb{level=-1, index=-1, size=0, maxElementPerLevel=6}", result);
+    }
+
+    /**
+     * Test case for the toString method when the SpiderWeb has elements.
+     */
+    @Test
+    public void testToStringNonEmptySpiderWeb() {
+        SpiderWeb<Integer> spiderWeb = new SpiderWeb<>();
+        spiderWeb.add(42);
+        spiderWeb.add(123);
+
+        String result = spiderWeb.toString();
+        assertEquals("SpiderWeb{level=0, index=1, size=2, maxElementPerLevel=6}", result);
+    }
 
     /**
      * Test case for the toString method when the SpiderWeb has a custom maxElementPerLevel value.
