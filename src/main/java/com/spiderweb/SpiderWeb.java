@@ -115,33 +115,48 @@ public class SpiderWeb<E> {
 
     // Private helper methods for managing temporary variables
 
-    private void resetTmpVariables(){
+    private void resetTmpVariables() {
         this.tmpLevel = 0;
         this.tmpIndex = 0;
     }
-    private void nextIndex(){
+    private void nextIndex() {
         this.tmpIndex++;
-        if (this.tmpIndex == this.maxElementPerLevel){
+        if (this.tmpIndex == this.maxElementPerLevel) {
             this.tmpLevel++;
             this.tmpIndex = 0;
         }
     }
 
-    private void resetTmpVariablesLast(){
+    private void resetTmpVariablesLast() {
         this.tmpIndex = this.index - 1;
-        if(this.tmpIndex < 0){
+        if(this.tmpIndex < 0) {
             this.tmpIndex = this.maxElementPerLevel - 1;
             this.tmpLevel = this.level - 1;
         }else{
             this.tmpLevel = this.level;
         }
     }
-    private void prevIndex(){
+    private void prevIndex() {
         this.tmpIndex--;
-        if(this.tmpIndex == -1){
+        if(this.tmpIndex == -1) {
             this.tmpLevel--;
             this.tmpIndex = this.maxElementPerLevel - 1;
         }
+    }
+
+    private void incrementIndex() {
+        this.index++;
+        if (this.index == (this.maxElementPerLevel)){
+            if(this.level == 0) {
+                this.levelPointer = this.first;
+            }
+            this.level++;
+            this.index = 0;
+        }
+    }
+
+    private void incrementSize() {
+        this.size++;
     }
 
     // Other public methods...
@@ -193,13 +208,13 @@ public class SpiderWeb<E> {
     }
 
     /**
-     * Adds an element to the SpiderWeb.
+     * Adds the specified element to the end of the SpiderWeb.
      *
-     * @param value The value to be added to the SpiderWeb.
+     * @param value The value to be added to the end of the SpiderWeb.
      */
     public void add(E value) {
         final SpiderWebNode<E> newNode = new SpiderWebNode<>(value, this.last, this.levelPointer);
-        if (this.first == null){
+        if (this.first == null) {
             this.first = newNode;
             this.last = newNode;
         } else {
@@ -210,15 +225,60 @@ public class SpiderWeb<E> {
                 this.levelPointer = this.levelPointer.getNextNode();
             }
         }
-        this.index++;
-        if (this.index == (this.maxElementPerLevel)){
-            if(this.level == 0) {
-                this.levelPointer = this.first;
+
+        this.incrementIndex();
+        this.incrementSize();
+    }
+
+    /**
+     *Adds the specified element to the beginning of the SpiderWeb.
+     *
+     * @param value The value to be added to the beginning of the SpiderWeb.
+     */
+    public void addFirst(E value) {
+        final SpiderWebNode<E> newNode = new SpiderWebNode<>(value, null, null);
+        if (this.first == null) {
+            this.first = newNode;
+            this.last = newNode;
+        } else {
+            this.first.setPrevNode(newNode);
+            newNode.setNextNode(this.first);
+            this.first = newNode;
+            if (this.size >= this.maxElementPerLevel) {
+                SpiderWebNode<E> tmpPointer = this.first;
+                for (int i = 0; i < this.maxElementPerLevel; i++) {
+                    tmpPointer = tmpPointer.getNextNode();
+                }
+                this.first.setNextLevelNode(tmpPointer);
+                tmpPointer.setPrevLevelNode(this.first);
             }
-            this.level++;
-            this.index = 0;
         }
-        this.size++;
+
+        this.incrementIndex();
+        this.incrementSize();
+    }
+
+    /**
+     *Adds the specified element to the end of the SpiderWeb.
+     *
+     * @param value The value to be added to the end of the SpiderWeb.
+     */
+    public void addLast(E value) {
+        final SpiderWebNode<E> newNode = new SpiderWebNode<>(value, this.last, this.levelPointer);
+        if (this.first == null) {
+            this.first = newNode;
+            this.last = newNode;
+        } else {
+            this.last.setNextNode(newNode);
+            this.last = newNode;
+            if (this.levelPointer != null) {
+                this.levelPointer.setNextLevelNode(newNode);
+                this.levelPointer = this.levelPointer.getNextNode();
+            }
+        }
+
+        this.incrementIndex();
+        this.incrementSize();
     }
 
     /**
