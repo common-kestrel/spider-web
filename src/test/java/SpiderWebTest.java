@@ -477,6 +477,43 @@ public class SpiderWebTest {
     }
 
     /**
+     * Test case for clearing an empty SpiderWeb.
+     */
+    @Test
+    public void testClearOnEmptySpiderWeb() {
+        SpiderWeb<String> spiderWeb = new SpiderWeb<>();
+        spiderWeb.clear();
+
+        assertEquals(0, spiderWeb.size());
+        assertNull(spiderWeb.getFirst());
+        assertNull(spiderWeb.getLast());
+        assertNull(spiderWeb.getLevelPointer());
+        assertEquals(-1, spiderWeb.getIndex());
+        assertEquals(-1, spiderWeb.getLevel());
+    }
+
+    /**
+     * Test case for clearing a non-empty SpiderWeb.
+     */
+    @Test
+    public void testClearOnNonEmptySpiderWeb() {
+        SpiderWeb<Integer> spiderWeb = new SpiderWeb<>();
+        spiderWeb.add(1);
+        spiderWeb.add(2);
+        spiderWeb.add(3);
+
+        spiderWeb.clear();
+
+        assertEquals(0, spiderWeb.size());
+        assertNull(spiderWeb.getFirst());
+        assertNull(spiderWeb.getLast());
+        assertNull(spiderWeb.getLevelPointer());
+        assertEquals(-1, spiderWeb.getIndex());
+        assertEquals(-1, spiderWeb.getLevel());
+    }
+
+
+    /**
      * Test case for the toString method when the SpiderWeb has a custom maxElementPerLevel value.
      */
     @Test
