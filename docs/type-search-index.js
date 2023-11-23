@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"com.spiderweb","l":"SpiderWebNode"}];updateSearchResults();
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"com.spiderweb","l":"SpiderWeb"},{"p":"com.spiderweb","l":"SpiderWebNode"}];updateSearchResults();
