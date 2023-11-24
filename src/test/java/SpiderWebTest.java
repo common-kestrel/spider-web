@@ -1,4 +1,5 @@
 import com.spiderweb.SpiderWeb;
+import com.spiderweb.SpiderWebNode;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -453,6 +454,94 @@ public class SpiderWebTest {
         HashMap<String, Integer> result = spiderWeb.lastIndexOf("apple");
         assertEquals(1, result.get("level"));
         assertEquals(0, result.get("index"));
+    }
+
+    /**
+     * Test case for finding the index of an object in an empty SpiderWeb.
+     */
+    @Test
+    public void testIndexOfObjectEmptySpiderWeb() {
+        SpiderWeb<Integer> spiderWeb = new SpiderWeb<>();
+        SpiderWebNode<Integer> spiderWebNode = new SpiderWebNode<>(2, null, null);
+
+        HashMap<String, Integer> result = spiderWeb.indexOf(spiderWebNode);
+        assertTrue(result.isEmpty());
+    }
+
+    /**
+     * Test case for finding the index of an object that exists in the SpiderWeb.
+     */
+    @Test
+    public void testIndexOfObjectExists() {
+        SpiderWeb<Integer> spiderWeb = new SpiderWeb<>();
+        spiderWeb.add(42);
+        spiderWeb.add(123);
+        spiderWeb.add(999);
+        SpiderWebNode<Integer> spiderWebNode = spiderWeb.getFirstNode();
+
+        HashMap<String, Integer> result = spiderWeb.indexOf(spiderWebNode);
+        assertEquals(0, result.get("level"));
+        assertEquals(0, result.get("index"));
+
+    }
+
+    /**
+     * Test case for finding the index of an object that does not exist in the SpiderWeb.
+     */
+    @Test
+    public void testIndexOfObjectNotExists() {
+        SpiderWeb<Integer> spiderWeb = new SpiderWeb<>();
+        spiderWeb.add(42);
+        spiderWeb.add(123);
+        spiderWeb.add(999);
+        SpiderWebNode<Integer> spiderWebNode = new SpiderWebNode<>(11, null, null);
+
+        HashMap<String, Integer> result = spiderWeb.indexOf(spiderWebNode);
+        assertTrue(result.isEmpty());
+    }
+
+    /**
+     * Test case for finding the last index of an object in an empty SpiderWeb.
+     */
+    @Test
+    public void testLastIndexOfObjectEmptySpiderWeb() {
+        SpiderWeb<Integer> spiderWeb = new SpiderWeb<>();
+        SpiderWebNode<Integer> spiderWebNode = new SpiderWebNode<>(2, null, null);
+
+        HashMap<String, Integer> result = spiderWeb.lastIndexOf(spiderWebNode);
+        assertTrue(result.isEmpty());
+    }
+
+    /**
+     * Test case for finding the last index of an object that exists in the SpiderWeb.
+     */
+    @Test
+    public void testLastIndexOfObjectExists() {
+        SpiderWeb<Integer> spiderWeb = new SpiderWeb<>();
+        spiderWeb.add(42);
+        spiderWeb.add(123);
+        spiderWeb.add(999);
+        SpiderWebNode<Integer> spiderWebNode = spiderWeb.getFirstNode();
+
+        HashMap<String, Integer> result = spiderWeb.lastIndexOf(spiderWebNode);
+        assertEquals(0, result.get("level"));
+        assertEquals(0, result.get("index"));
+
+    }
+
+    /**
+     * Test case for finding the last index of an object that does not exist in the SpiderWeb.
+     */
+    @Test
+    public void testLastIndexOfObjectNotExists() {
+        SpiderWeb<Integer> spiderWeb = new SpiderWeb<>();
+        spiderWeb.add(42);
+        spiderWeb.add(123);
+        spiderWeb.add(999);
+        SpiderWebNode<Integer> spiderWebNode = new SpiderWebNode<>(11, null, null);
+
+        HashMap<String, Integer> result = spiderWeb.lastIndexOf(spiderWebNode);
+        assertTrue(result.isEmpty());
     }
 
     /**

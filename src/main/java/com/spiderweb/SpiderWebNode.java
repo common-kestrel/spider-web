@@ -145,4 +145,16 @@ public class SpiderWebNode<E> {
     public void setPrevLevelNode(SpiderWebNode<E> prevLevelNode) {
         this.prevLevelNode = prevLevelNode;
     }
+
+    /**
+     * Returns a string representation of the SpiderWebNode.
+     *
+     * @return A string representation of the SpiderWebNode, including its value.
+     */
+    @Override
+    public String toString() {
+        return "SpiderWebNode{" +
+                "value=" + value +
+                '}';
+    }
 }
