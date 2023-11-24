@@ -16,14 +16,14 @@ import java.util.NoSuchElementException;
  * spiderWeb.add(1);
  * spiderWeb.add(2);
  * spiderWeb.add(3);
- * System.out.println(spiderWeb.toString());
+ * spiderWeb.print();
  * </pre></blockquote>
  *
  * @param <E> the type of elements stored in the SpiderWeb
  *
  * @author Milan Savic
  * @version 1.0
- * @since November 21, 2023
+ * @since November 24, 2023
  */
 public class SpiderWeb<E> {
     // Private fields for managing the spider web structure
@@ -182,6 +182,45 @@ public class SpiderWeb<E> {
         return (level >= 0 && level <= this.getLevel()) && (index >= 0 && index <= this.getMaximumIndexForLevel(level));
     }
 
+    private void addFirstNode(SpiderWebNode<E> newNode) {
+        if (this.first == null) {
+            this.first = newNode;
+            this.last = newNode;
+        } else {
+            this.first.setPrevNode(newNode);
+            newNode.setNextNode(this.first);
+            this.first = newNode;
+            if (this.size >= this.maxElementPerLevel) {
+                SpiderWebNode<E> tmpPointer = this.first;
+                for (int i = 0; i < this.maxElementPerLevel; i++) {
+                    tmpPointer = tmpPointer.getNextNode();
+                }
+                this.first.setNextLevelNode(tmpPointer);
+                tmpPointer.setPrevLevelNode(this.first);
+            }
+        }
+
+        this.incrementIndex();
+        this.incrementSize();
+    }
+
+    private void addLastNode(SpiderWebNode<E> newNode) {
+        if (this.first == null) {
+            this.first = newNode;
+            this.last = newNode;
+        } else {
+            this.last.setNextNode(newNode);
+            this.last = newNode;
+            if (this.levelPointer != null) {
+                this.levelPointer.setNextLevelNode(newNode);
+                this.levelPointer = this.levelPointer.getNextNode();
+            }
+        }
+
+        this.incrementIndex();
+        this.incrementSize();
+    }
+
     // Other public methods...
 
     /**
@@ -263,20 +302,19 @@ public class SpiderWeb<E> {
      */
     public void add(E value) {
         final SpiderWebNode<E> newNode = new SpiderWebNode<>(value, this.last, this.levelPointer);
-        if (this.first == null) {
-            this.first = newNode;
-            this.last = newNode;
-        } else {
-            this.last.setNextNode(newNode);
-            this.last = newNode;
-            if (this.levelPointer != null) {
-                this.levelPointer.setNextLevelNode(newNode);
-                this.levelPointer = this.levelPointer.getNextNode();
-            }
-        }
+        this.addLastNode(newNode);
+    }
 
-        this.incrementIndex();
-        this.incrementSize();
+    /**
+     * Adds a new SpiderWebNode to the end of the SpiderWeb.
+     *
+     * @param newNode The SpiderWebNode to be added to the SpiderWeb.
+     */
+    public void add(SpiderWebNode<E> newNode) {
+        newNode.resetPointers();
+        newNode.setPrevNode(this.last);
+        newNode.setPrevLevelNode(this.levelPointer);
+        this.addLastNode(newNode);
     }
 
     /**
@@ -286,25 +324,17 @@ public class SpiderWeb<E> {
      */
     public void addFirst(E value) {
         final SpiderWebNode<E> newNode = new SpiderWebNode<>(value, null, null);
-        if (this.first == null) {
-            this.first = newNode;
-            this.last = newNode;
-        } else {
-            this.first.setPrevNode(newNode);
-            newNode.setNextNode(this.first);
-            this.first = newNode;
-            if (this.size >= this.maxElementPerLevel) {
-                SpiderWebNode<E> tmpPointer = this.first;
-                for (int i = 0; i < this.maxElementPerLevel; i++) {
-                    tmpPointer = tmpPointer.getNextNode();
-                }
-                this.first.setNextLevelNode(tmpPointer);
-                tmpPointer.setPrevLevelNode(this.first);
-            }
-        }
+        this.addFirstNode(newNode);
+    }
 
-        this.incrementIndex();
-        this.incrementSize();
+    /**
+     * Adds a new SpiderWebNode to the beginning of the SpiderWeb.
+     *
+     * @param newNode The SpiderWebNode to be added to the SpiderWeb.
+     */
+    public void addFirst(SpiderWebNode<E> newNode) {
+        newNode.resetPointers();
+        this.addFirstNode(newNode);
     }
 
     /**
@@ -314,6 +344,15 @@ public class SpiderWeb<E> {
      */
     public void addLast(E value) {
         this.add(value);
+    }
+
+    /**
+     * Adds a new SpiderWebNode to the end of the SpiderWeb.
+     *
+     * @param node The SpiderWebNode to be added to the SpiderWeb.
+     */
+    public void addLast(SpiderWebNode<E> node) {
+        this.add(node);
     }
 
     /**

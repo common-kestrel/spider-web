@@ -130,6 +130,61 @@ public class SpiderWebTest {
     }
 
     /**
+     * Test case for adding a new node to an empty SpiderWeb.
+     */
+    @Test
+    public void testAddNodeToEmptySpiderWeb() {
+        SpiderWeb<String> spiderWeb = new SpiderWeb<>();
+        SpiderWebNode<String> node = new SpiderWebNode<>("A", null, null);
+        spiderWeb.add(node);
+
+        assertNotNull(spiderWeb.getFirstNode());
+        assertNotNull(spiderWeb.getLastNode());
+        assertNull(spiderWeb.getLevelPointer());
+        assertEquals(0, spiderWeb.getLevel());
+        assertEquals(0, spiderWeb.getIndex());
+        assertEquals(1, spiderWeb.size());
+    }
+
+    /**
+     * Test case for adding multiple nodes to the SpiderWeb.
+     */
+    @Test
+    public void testAddMultipleNodes() {
+        SpiderWeb<Integer> spiderWeb = new SpiderWeb<>();
+        SpiderWebNode<Integer> node1 = new SpiderWebNode<>(1, null, null);
+        SpiderWebNode<Integer> node2 = new SpiderWebNode<>(2, null, null);
+        SpiderWebNode<Integer> node3 = new SpiderWebNode<>(3, null, null);
+        spiderWeb.add(node1);
+        spiderWeb.add(node2);
+        spiderWeb.add(node3);
+
+        assertEquals(0, spiderWeb.getLevel());
+        assertEquals(2, spiderWeb.getIndex());
+        assertEquals(3, spiderWeb.size());
+    }
+
+    /**
+     * Test case for adding a new node to exceed the maximum index for a level.
+     */
+    @Test
+    public void testAddNodeExceedingMaxIndex() {
+        SpiderWeb<Character> spiderWeb = new SpiderWeb<>(2);
+        SpiderWebNode<Character> node1 = new SpiderWebNode<>('A', null, null);
+        SpiderWebNode<Character> node2 = new SpiderWebNode<>('B', null, null);
+        SpiderWebNode<Character> node3 = new SpiderWebNode<>('C', null, null);
+        spiderWeb.add(node1);
+        spiderWeb.add(node2);
+        spiderWeb.add(node3);
+
+        assertEquals(1, spiderWeb.getLevel());
+        assertEquals(0, spiderWeb.getIndex());
+        assertEquals(3, spiderWeb.size());
+        assertNotNull(spiderWeb.getLevelPointer());
+        assertEquals('C', spiderWeb.getFirstNode().getNextLevelNode().getValue());
+    }
+
+    /**
      * Test case for adding elements using the addFirst method.
      */
     @Test
@@ -176,6 +231,76 @@ public class SpiderWebTest {
         spiderWeb.addFirst("A");
 
         spiderWeb.addFirst("D");
+        assertEquals(4, spiderWeb.size());
+        assertEquals("D", spiderWeb.getFirstNode().getValue());
+        assertEquals("C", spiderWeb.getLastNode().getValue());
+        assertEquals(1, spiderWeb.getLevel());
+        assertNull(spiderWeb.getFirstNode().getPrevNode());
+        assertNotNull(spiderWeb.getFirstNode().getNextNode());
+        assertNull(spiderWeb.getFirstNode().getPrevLevelNode());
+        assertNotNull(spiderWeb.getFirstNode().getNextLevelNode());
+        assertNotNull(spiderWeb.getLastNode().getPrevNode());
+        assertNull(spiderWeb.getLastNode().getNextNode());
+        assertNotNull(spiderWeb.getLastNode().getPrevLevelNode());
+        assertNull(spiderWeb.getLastNode().getNextLevelNode());
+    }
+
+    /**
+     * Test case for adding a new node using the addFirst method.
+     */
+    @Test
+    public void testAddFirstNode() {
+        SpiderWeb<String> spiderWeb = new SpiderWeb<>();
+        SpiderWebNode<String> node1 = new SpiderWebNode<>("C", null, null);
+        SpiderWebNode<String> node2 = new SpiderWebNode<>("B", null, null);
+        SpiderWebNode<String> node3 = new SpiderWebNode<>("A", null, null);
+        spiderWeb.addFirst(node1);
+        spiderWeb.addFirst(node2);
+        spiderWeb.addFirst(node3);
+
+        assertEquals(3, spiderWeb.size());
+        assertEquals("A", spiderWeb.getFirstNode().getValue());
+        assertEquals("C", spiderWeb.getLastNode().getValue());
+        assertNull(spiderWeb.getFirstNode().getPrevNode());
+        assertNotNull(spiderWeb.getFirstNode().getNextNode());
+        assertNull(spiderWeb.getFirstNode().getPrevLevelNode());
+        assertNull(spiderWeb.getFirstNode().getNextLevelNode());
+        assertNotNull(spiderWeb.getLastNode().getPrevNode());
+        assertNull(spiderWeb.getLastNode().getNextNode());
+        assertNull(spiderWeb.getLastNode().getPrevLevelNode());
+        assertNull(spiderWeb.getLastNode().getNextLevelNode());
+    }
+
+    /**
+     * Test case for adding a new node to an empty SpiderWeb using the addFirst method.
+     */
+    @Test
+    public void testAddFirstNodeOnEmptySpiderWeb() {
+        SpiderWeb<Integer> spiderWeb = new SpiderWeb<>();
+        SpiderWebNode<Integer> node = new SpiderWebNode<>(42, null, null);
+        spiderWeb.addFirst(node);
+
+        assertEquals(1, spiderWeb.size());
+        assertEquals(42, spiderWeb.getFirstNode().getValue());
+        assertEquals(42, spiderWeb.getLastNode().getValue());
+    }
+
+    /**
+     * Test case for adding a new node to exceed the maximum index for a level using the addFirst method.
+     */
+    @Test
+    public void testAddFirstNodeOnSpiderWebWithMaxElements() {
+        SpiderWeb<String> spiderWeb = new SpiderWeb<>(3);
+        SpiderWebNode<String> node1 = new SpiderWebNode<>("C", null, null);
+        SpiderWebNode<String> node2 = new SpiderWebNode<>("B", null, null);
+        SpiderWebNode<String> node3 = new SpiderWebNode<>("A", null, null);
+        spiderWeb.addFirst(node1);
+        spiderWeb.addFirst(node2);
+        spiderWeb.addFirst(node3);
+
+        SpiderWebNode<String> node4 = new SpiderWebNode<>("D", null, null);
+        spiderWeb.addFirst(node4);
+
         assertEquals(4, spiderWeb.size());
         assertEquals("D", spiderWeb.getFirstNode().getValue());
         assertEquals("C", spiderWeb.getLastNode().getValue());
