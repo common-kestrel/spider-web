@@ -545,6 +545,73 @@ public class SpiderWebTest {
     }
 
     /**
+     * Test case for getting the element at a valid level and index.
+     */
+    @Test
+    public void testGetValidLevelAndIndex() {
+        SpiderWeb<Integer> spiderWeb = new SpiderWeb<>();
+        spiderWeb.add(1);
+        spiderWeb.add(2);
+        spiderWeb.add(3);
+
+        int result = spiderWeb.get(0, 1);
+
+        assertEquals(2, result);
+    }
+
+    /**
+     * Test case for getting the element at an invalid level.
+     */
+    @Test
+    public void testGetInvalidLevel() {
+        SpiderWeb<String> spiderWeb = new SpiderWeb<>();
+
+        int invalidLevel = -1;
+        int validIndex = 1;
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> spiderWeb.get(invalidLevel, validIndex));
+
+        assertEquals("Invalid level or index. Level: " + invalidLevel + ", Index: " + validIndex,
+                exception.getMessage(), "Expected IllegalArgumentException for invalid level");
+    }
+
+    /**
+     * Test case for getting the element at an invalid index.
+     */
+    @Test
+    public void testGetInvalidIndex() {
+        SpiderWeb<Integer> spiderWeb = new SpiderWeb<>();
+        spiderWeb.add(1);
+
+        int validLevel = 0;
+        int invalidIndex = 1;
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> spiderWeb.get(validLevel, invalidIndex));
+
+        assertEquals("Invalid level or index. Level: " + validLevel + ", Index: " + invalidIndex,
+                exception.getMessage(), "Expected IllegalArgumentException for invalid index");
+    }
+
+    /**
+     * Test case for getting the element when the SpiderWeb is empty.
+     */
+    @Test
+    public void testGetEmptySpiderWeb() {
+        SpiderWeb<Character> spiderWeb = new SpiderWeb<>();
+
+        int level = 0;
+        int index = 0;
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> spiderWeb.get(level, index));
+
+        assertEquals("Invalid level or index. Level: " + level + ", Index: " + index,
+                exception.getMessage(), "Expected IllegalArgumentException for invalid index");
+    }
+
+    /**
      * Test case for setting an element at a valid level and index.
      */
     @Test
