@@ -115,6 +115,12 @@ public class SpiderWeb<E> {
 
     // Private helper methods for managing temporary variables
 
+    private void resetPointers() {
+        this.first = null;
+        this.last = null;
+        this.levelPointer = null;
+    }
+
     private void resetTmpVariables() {
         this.tmpLevel = 0;
         this.tmpIndex = 0;
@@ -155,8 +161,21 @@ public class SpiderWeb<E> {
         }
     }
 
+    private void decrementIndex() {
+        if (this.index > 0) {
+            this.index--;
+        } else {
+            this.index = maxElementPerLevel - 1;
+            this.level--;
+        }
+    }
+
     private void incrementSize() {
         this.size++;
+    }
+
+    private void decrementSize() {
+        this.size--;
     }
 
     private boolean isValidLevelAndIndex(int level, int index) {
@@ -387,12 +406,45 @@ public class SpiderWeb<E> {
     }
 
     /**
+     * Removes and returns the first element from the SpiderWeb.
+     *
+     * @return The first element in the SpiderWeb.
+     * @throws NoSuchElementException If the SpiderWeb is empty.
+     */
+    public E removeFirst() {
+        if (this.first == null) {
+            throw new NoSuchElementException("Cannot remove from an empty SpiderWeb.");
+        }
+
+        final SpiderWebNode<E> next = this.first.getNextNode();
+        final SpiderWebNode<E> nextLevel = this.first.getNextLevelNode();
+        final E firstValue = this.first.getValue();
+
+        if (next != null) {
+            next.setPrevNode(null);
+            this.first.setNextNode(null);
+            if (nextLevel != null) {
+                nextLevel.setPrevLevelNode(null);
+                this.first.setNextLevelNode(null);
+            }
+            this.first = next;
+        } else {
+            this.resetPointers();
+        }
+
+        this.decrementIndex();
+        this.decrementSize();
+
+        return firstValue;
+    }
+
+    /**
      * Removes and returns the last element from the SpiderWeb.
      *
      * @return The last element in the SpiderWeb.
      * @throws NoSuchElementException If the SpiderWeb is empty.
      */
-    public E removeLast(){
+    public E removeLast() {
         if(this.first == null) {
             throw new NoSuchElementException("Cannot remove from an empty SpiderWeb.");
         }
@@ -409,13 +461,8 @@ public class SpiderWeb<E> {
             this.last = prev;
         }
 
-        if (this.index > 0) {
-            this.index--;
-        } else {
-            this.index = maxElementPerLevel - 1;
-            this.level--;
-        }
-        this.size--;
+        this.decrementIndex();
+        this.decrementSize();
 
         return lastValue;
     }
