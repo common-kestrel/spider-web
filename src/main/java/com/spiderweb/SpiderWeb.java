@@ -313,21 +313,7 @@ public class SpiderWeb<E> {
      * @param value The value to be added to the end of the SpiderWeb.
      */
     public void addLast(E value) {
-        final SpiderWebNode<E> newNode = new SpiderWebNode<>(value, this.last, this.levelPointer);
-        if (this.first == null) {
-            this.first = newNode;
-            this.last = newNode;
-        } else {
-            this.last.setNextNode(newNode);
-            this.last = newNode;
-            if (this.levelPointer != null) {
-                this.levelPointer.setNextLevelNode(newNode);
-                this.levelPointer = this.levelPointer.getNextNode();
-            }
-        }
-
-        this.incrementIndex();
-        this.incrementSize();
+        this.add(value);
     }
 
     /**
