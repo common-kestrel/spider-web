@@ -61,7 +61,7 @@ public class SpiderWeb<E> {
      *
      * @return The first node in the SpiderWeb.
      */
-    public SpiderWebNode<E> getFirst() {
+    public SpiderWebNode<E> getFirstNode() {
         return first;
     }
 
@@ -79,7 +79,7 @@ public class SpiderWeb<E> {
      *
      * @return The last node in the SpiderWeb.
      */
-    public SpiderWebNode<E> getLast() {
+    public SpiderWebNode<E> getLastNode() {
         return last;
     }
 
@@ -209,6 +209,32 @@ public class SpiderWeb<E> {
             current = current.getNextNode();
             this.nextIndex();
         }
+    }
+
+    /**
+     * Returns the value of the first element in the SpiderWeb.
+     *
+     * @return The value of the first element.
+     * @throws NoSuchElementException If the SpiderWeb is empty and there is no first element to return.
+     */
+    public E getFirst() {
+        if (this.first == null) {
+            throw new NoSuchElementException("SpiderWeb is empty, no first element available.");
+        }
+        return this.first.getValue();
+    }
+
+    /**
+     * Returns the value of the last element in the SpiderWeb.
+     *
+     * @return The value of the last element.
+     * @throws NoSuchElementException If the SpiderWeb is empty and there is no last element to return.
+     */
+    public E getLast() {
+        if (this.last == null) {
+            throw new NoSuchElementException("SpiderWeb is empty, no last element available.");
+        }
+        return this.last.getValue();
     }
 
     /**
