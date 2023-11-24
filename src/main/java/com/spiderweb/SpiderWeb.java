@@ -365,6 +365,56 @@ public class SpiderWeb<E> {
     }
 
     /**
+     * Searches for the specified object in the SpiderWeb and returns its level and index.
+     *
+     * @param o The object to search for in the SpiderWeb.
+     * @return A HashMap containing the level and index of the specified object.
+     *         If the object is not found, an empty HashMap is returned.
+     */
+    public HashMap<String, Integer> indexOf(SpiderWebNode<E> o) {
+        SpiderWebNode<E> current = this.first;
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        this.resetTmpVariables();
+
+        while (current != null){
+            if (current.equals(o)){
+                hashMap.put("level", this.tmpLevel);
+                hashMap.put("index", this.tmpIndex);
+                return hashMap;
+            }
+            this.nextIndex();
+            current = current.getNextNode();
+        }
+
+        return hashMap;
+    }
+
+    /**
+     * Searches for the last occurrence of the specified object in the SpiderWeb and returns its level and index.
+     *
+     * @param o The object to search for in the SpiderWeb.
+     * @return A HashMap containing the level and index of the last occurrence of the specified object.
+     *         If the object is not found, an empty HashMap is returned.
+     */
+    public HashMap<String, Integer> lastIndexOf(SpiderWebNode<E> o) {
+        SpiderWebNode<E> current = this.last;
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        this.resetTmpVariablesLast();
+
+        while (current != null){
+            if (current.equals(o)){
+                hashMap.put("level", this.tmpLevel);
+                hashMap.put("index", this.tmpIndex);
+                return hashMap;
+            }
+            this.prevIndex();
+            current = current.getPrevNode();
+        }
+
+        return hashMap;
+    }
+
+    /**
      * Sets the element at the specified level and index in the SpiderWeb, replacing any existing element.
      * Returns the previous value at the specified position.
      *
