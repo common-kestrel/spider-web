@@ -415,6 +415,30 @@ public class SpiderWeb<E> {
     }
 
     /**
+     * Returns the element at the specified level and index in the SpiderWeb.
+     *
+     * @param level The level of the desired element (non-negative).
+     * @param index The index of the desired element (positive).
+     * @return The element at the specified level and index in the SpiderWeb.
+     *
+     * @throws IllegalArgumentException If the provided level or index is invalid.
+     * @throws IllegalStateException If the operation fails to get the element, which should not occur under normal conditions.
+     */
+    public E get(int level, int index) {
+        if (!this.isValidLevelAndIndex(level, index)) {
+            throw new IllegalArgumentException("Invalid level or index. Level: " + level + ", Index: " + index);
+        }
+        this.resetTmpVariables();
+        for (SpiderWebNode<E> node = this.first; node != null; node = node.getNextNode()) {
+            if (this.tmpLevel == level && this.tmpIndex == index) {
+                return node.getValue();
+            }
+            this.nextIndex();
+        }
+        throw new IllegalStateException("Failed to set element. Level: " + level + ", Index: " + index);
+    }
+
+    /**
      * Sets the element at the specified level and index in the SpiderWeb, replacing any existing element.
      * Returns the previous value at the specified position.
      *
