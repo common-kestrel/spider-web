@@ -506,6 +506,92 @@ public class SpiderWebTest {
         assertThrows(IllegalArgumentException.class, () -> spiderWeb.set(1, 1, 42));
     }
 
+
+    /**
+     * Test case for removing the first element from an empty SpiderWeb.
+     */
+    @Test
+    void testRemoveFirstFromEmptySpiderWeb() {
+        SpiderWeb<Integer> spiderWeb = new SpiderWeb<>();
+
+        NoSuchElementException exception = assertThrows(NoSuchElementException.class, spiderWeb::removeFirst);
+        assertEquals("Cannot remove from an empty SpiderWeb.", exception.getMessage());
+        assertEquals(0, spiderWeb.size());
+        assertNull(spiderWeb.getFirstNode());
+        assertNull(spiderWeb.getLastNode());
+        assertNull(spiderWeb.getLevelPointer());
+    }
+
+    /**
+     * Test case for removing the first element from a non-empty SpiderWeb.
+     */
+    @Test
+    void testRemoveFirstFromNonEmptySpiderWeb() {
+        SpiderWeb<String> spiderWeb = new SpiderWeb<>();
+        spiderWeb.add("Element1");
+        spiderWeb.add("Element2");
+
+        String removedElement = spiderWeb.removeFirst();
+
+        assertEquals("Element1", removedElement);
+        assertEquals("Element2", spiderWeb.getFirst());
+        assertEquals(1, spiderWeb.size());
+    }
+
+    /**
+     * Test case for removing the first element from a SpiderWeb with a single element.
+     */
+    @Test
+    void testRemoveFirstFromSingleElementSpiderWeb() {
+        SpiderWeb<String> spiderWeb = new SpiderWeb<>();
+        spiderWeb.add("SingleElement");
+
+        String removedElement = spiderWeb.removeFirst();
+
+        assertEquals("SingleElement", removedElement);
+        assertNull(spiderWeb.getFirstNode());
+        assertNull(spiderWeb.getLastNode());
+        assertNull(spiderWeb.getLevelPointer());
+    }
+
+    /**
+     * Test case for removing the first two elements from a SpiderWeb.
+     */
+    @Test
+    void testRemoveFirstTwiceFromSpiderWeb() {
+        SpiderWeb<String> spiderWeb = new SpiderWeb<>();
+        spiderWeb.add("Element1");
+        spiderWeb.add("Element2");
+
+        String removedElement1 = spiderWeb.removeFirst();
+        String removedElement2 = spiderWeb.removeFirst();
+
+        assertEquals("Element1", removedElement1);
+        assertEquals("Element2", removedElement2);
+        assertNull(spiderWeb.getFirstNode());
+        assertNull(spiderWeb.getLastNode());
+        assertNull(spiderWeb.getLevelPointer());
+    }
+
+    /**
+     * Test case removing the first element from a SpiderWeb with next-level nodes.
+     */
+    @Test
+    void testRemoveFirstFromSpiderWebWithNextLevel() {
+        SpiderWeb<String> spiderWeb = new SpiderWeb<>(2);
+        spiderWeb.add("Element1");
+        spiderWeb.add("Element2");
+        spiderWeb.add("Element3");
+
+        String removedElement = spiderWeb.removeFirst();
+
+        assertEquals("Element1", removedElement);
+        assertEquals("Element2", spiderWeb.getFirst());
+        assertEquals(2, spiderWeb.size());
+        assertNull(spiderWeb.getFirstNode().getPrevNode());
+        assertNull(spiderWeb.getLastNode().getPrevLevelNode());
+    }
+
     /**
      * Test case for removing the last element from an empty SpiderWeb.
      */
