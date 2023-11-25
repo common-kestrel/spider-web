@@ -25,7 +25,7 @@ import java.util.NoSuchElementException;
  * @version 1.0
  * @since November 24, 2023
  */
-public class SpiderWeb<E> {
+public class SpiderWeb<E> implements Cloneable{
     // Private fields for managing the spider web structure
 
     private SpiderWebNode<E> first;
@@ -114,6 +114,13 @@ public class SpiderWeb<E> {
     }
 
     // Private helper methods for managing temporary variables
+
+    private void resetSpiderWeb() {
+        this.resetPointers();
+        this.level = 0;
+        this.index = 0;
+        this.size = 0;
+    }
 
     private void resetPointers() {
         this.first = null;
@@ -219,6 +226,15 @@ public class SpiderWeb<E> {
 
         this.incrementIndex();
         this.incrementSize();
+    }
+
+    @SuppressWarnings("unchecked")
+    private SpiderWeb<E> superClone() {
+        try {
+            return (SpiderWeb<E>) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new InternalError(e);
+        }
     }
 
     // Other public methods...
@@ -581,12 +597,23 @@ public class SpiderWeb<E> {
             node = next;
         }
 
-        this.first = null;
-        this.last = null;
-        this.levelPointer = null;
-        this.index = 0;
-        this.level = 0;
-        this.size = 0;
+        this.resetSpiderWeb();
+    }
+
+
+    /**
+     * Returns a shallow copy of this SpiderWeb instance.
+     *
+     * @return A shallow copy of this SpiderWeb instance.
+     */
+    @Override
+    public Object clone() {
+        SpiderWeb<E> clone = superClone();
+        clone.resetSpiderWeb();
+
+        for (SpiderWebNode<E> x = first; x != null; x = x.getNextNode())
+            clone.add(x.getValue());
+        return clone;
     }
 
     /**
