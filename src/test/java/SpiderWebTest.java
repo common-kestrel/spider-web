@@ -949,6 +949,40 @@ public class SpiderWebTest {
         assertEquals(-1, spiderWeb.getLevel());
     }
 
+
+    /**
+     * Test case for cloning an empty SpiderWeb.
+     */
+    @Test
+    public void testCloneEmptySpiderWeb() {
+        SpiderWeb<Integer> originalSpiderWeb = new SpiderWeb<>();
+
+        SpiderWeb<Integer> clonedSpiderWeb = (SpiderWeb<Integer>) originalSpiderWeb.clone();
+
+        assertNotSame(originalSpiderWeb, clonedSpiderWeb);
+        assertEquals(originalSpiderWeb.toString(), clonedSpiderWeb.toString());
+    }
+
+    /**
+     * Test case for cloning a SpiderWeb with elements.
+     */
+    @Test
+    public void testCloneNonEmptySpiderWeb() {
+        SpiderWeb<String> originalSpiderWeb = new SpiderWeb<>();
+        originalSpiderWeb.add("A");
+        originalSpiderWeb.add("B");
+        originalSpiderWeb.add("C");
+
+        SpiderWeb<String> clonedSpiderWeb = (SpiderWeb<String>) originalSpiderWeb.clone();
+
+        assertNotSame(originalSpiderWeb, clonedSpiderWeb);
+
+        assertEquals(originalSpiderWeb.toString(), clonedSpiderWeb.toString());
+
+        originalSpiderWeb.add("D");
+        assertNotEquals(originalSpiderWeb.toString(), clonedSpiderWeb.toString());
+    }
+
     /**
      * Test case for the toString method when the SpiderWeb is empty.
      */
