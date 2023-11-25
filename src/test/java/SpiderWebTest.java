@@ -91,7 +91,7 @@ public class SpiderWebTest {
 
         assertNotNull(spiderWeb.getFirstNode());
         assertNotNull(spiderWeb.getLastNode());
-        assertNull(spiderWeb.getLevelPointer());
+        assertNull(spiderWeb.getPrevLevel());
         assertEquals(0, spiderWeb.getLevel());
         assertEquals(0, spiderWeb.getIndex());
         assertEquals(1, spiderWeb.size());
@@ -125,7 +125,7 @@ public class SpiderWebTest {
         assertEquals(1, spiderWeb.getLevel());
         assertEquals(0, spiderWeb.getIndex());
         assertEquals(3, spiderWeb.size());
-        assertNotNull(spiderWeb.getLevelPointer());
+        assertNotNull(spiderWeb.getPrevLevel());
         assertEquals('C', spiderWeb.getFirstNode().getNextLevelNode().getValue());
     }
 
@@ -140,7 +140,7 @@ public class SpiderWebTest {
 
         assertNotNull(spiderWeb.getFirstNode());
         assertNotNull(spiderWeb.getLastNode());
-        assertNull(spiderWeb.getLevelPointer());
+        assertNull(spiderWeb.getPrevLevel());
         assertEquals(0, spiderWeb.getLevel());
         assertEquals(0, spiderWeb.getIndex());
         assertEquals(1, spiderWeb.size());
@@ -180,7 +180,7 @@ public class SpiderWebTest {
         assertEquals(1, spiderWeb.getLevel());
         assertEquals(0, spiderWeb.getIndex());
         assertEquals(3, spiderWeb.size());
-        assertNotNull(spiderWeb.getLevelPointer());
+        assertNotNull(spiderWeb.getPrevLevel());
         assertEquals('C', spiderWeb.getFirstNode().getNextLevelNode().getValue());
     }
 
@@ -800,7 +800,7 @@ public class SpiderWebTest {
         assertEquals(0, spiderWeb.size());
         assertNull(spiderWeb.getFirstNode());
         assertNull(spiderWeb.getLastNode());
-        assertNull(spiderWeb.getLevelPointer());
+        assertNull(spiderWeb.getPrevLevel());
     }
 
     /**
@@ -832,7 +832,7 @@ public class SpiderWebTest {
         assertEquals("SingleElement", removedElement);
         assertNull(spiderWeb.getFirstNode());
         assertNull(spiderWeb.getLastNode());
-        assertNull(spiderWeb.getLevelPointer());
+        assertNull(spiderWeb.getPrevLevel());
     }
 
     /**
@@ -851,7 +851,7 @@ public class SpiderWebTest {
         assertEquals("Element2", removedElement2);
         assertNull(spiderWeb.getFirstNode());
         assertNull(spiderWeb.getLastNode());
-        assertNull(spiderWeb.getLevelPointer());
+        assertNull(spiderWeb.getPrevLevel());
     }
 
     /**
@@ -924,7 +924,7 @@ public class SpiderWebTest {
         assertEquals(0, spiderWeb.size());
         assertNull(spiderWeb.getFirstNode());
         assertNull(spiderWeb.getLastNode());
-        assertNull(spiderWeb.getLevelPointer());
+        assertNull(spiderWeb.getPrevLevel());
         assertEquals(-1, spiderWeb.getIndex());
         assertEquals(-1, spiderWeb.getLevel());
     }
@@ -944,7 +944,7 @@ public class SpiderWebTest {
         assertEquals(0, spiderWeb.size());
         assertNull(spiderWeb.getFirstNode());
         assertNull(spiderWeb.getLastNode());
-        assertNull(spiderWeb.getLevelPointer());
+        assertNull(spiderWeb.getPrevLevel());
         assertEquals(-1, spiderWeb.getIndex());
         assertEquals(-1, spiderWeb.getLevel());
     }
