@@ -29,7 +29,7 @@ public class SpiderWeb<E> implements Cloneable{
     // Private fields for managing the spider web structure
 
     private SpiderWebNode<E> first;
-    private SpiderWebNode<E> levelPointer;
+    private SpiderWebNode<E> prevLevel;
     private SpiderWebNode<E> last;
     private int level;
     private int index;
@@ -66,12 +66,12 @@ public class SpiderWeb<E> implements Cloneable{
     }
 
     /**
-     * Gets the current level pointer in the SpiderWeb.
+     * Gets the previous level pointer in the SpiderWeb.
      *
-     * @return The current level pointer in the SpiderWeb.
+     * @return The previous level pointer in the SpiderWeb.
      */
-    public SpiderWebNode<E> getLevelPointer() {
-        return levelPointer;
+    public SpiderWebNode<E> getPrevLevel() {
+        return prevLevel;
     }
 
     /**
@@ -125,7 +125,7 @@ public class SpiderWeb<E> implements Cloneable{
     private void resetPointers() {
         this.first = null;
         this.last = null;
-        this.levelPointer = null;
+        this.prevLevel = null;
     }
 
     private void resetTmpVariables() {
@@ -161,7 +161,7 @@ public class SpiderWeb<E> implements Cloneable{
         this.index++;
         if (this.index == (this.maxElementPerLevel)){
             if(this.level == 0) {
-                this.levelPointer = this.first;
+                this.prevLevel = this.first;
             }
             this.level++;
             this.index = 0;
@@ -218,9 +218,9 @@ public class SpiderWeb<E> implements Cloneable{
         } else {
             this.last.setNextNode(newNode);
             this.last = newNode;
-            if (this.levelPointer != null) {
-                this.levelPointer.setNextLevelNode(newNode);
-                this.levelPointer = this.levelPointer.getNextNode();
+            if (this.prevLevel != null) {
+                this.prevLevel.setNextLevelNode(newNode);
+                this.prevLevel = this.prevLevel.getNextNode();
             }
         }
 
@@ -317,7 +317,7 @@ public class SpiderWeb<E> implements Cloneable{
      * @param value The value to be added to the end of the SpiderWeb.
      */
     public void add(E value) {
-        final SpiderWebNode<E> newNode = new SpiderWebNode<>(value, this.last, this.levelPointer);
+        final SpiderWebNode<E> newNode = new SpiderWebNode<>(value, this.last, this.prevLevel);
         this.addLastNode(newNode);
     }
 
@@ -329,7 +329,7 @@ public class SpiderWeb<E> implements Cloneable{
     public void add(SpiderWebNode<E> newNode) {
         newNode.resetPointers();
         newNode.setPrevNode(this.last);
-        newNode.setPrevLevelNode(this.levelPointer);
+        newNode.setPrevLevelNode(this.prevLevel);
         this.addLastNode(newNode);
     }
 
