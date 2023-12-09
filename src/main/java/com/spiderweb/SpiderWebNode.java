@@ -157,6 +157,14 @@ public class SpiderWebNode<E> {
     }
 
     /**
+     * Resets the SpiderWebNode, setting its value to null and resetting all pointers to null.
+     */
+    public void resetSpiderWebNode() {
+        resetPointers();
+        this.value = null;
+    }
+
+    /**
      * Returns a string representation of the SpiderWebNode.
      *
      * @return A string representation of the SpiderWebNode, including its value.

@@ -473,7 +473,7 @@ public class SpiderWeb<E> implements Cloneable{
      * Returns the element at the specified level and index in the SpiderWeb.
      *
      * @param level The level of the desired element (non-negative).
-     * @param index The index of the desired element (positive).
+     * @param index The index of the desired element (non-negative).
      * @return The element at the specified level and index in the SpiderWeb.
      *
      * @throws IllegalArgumentException If the provided level or index is invalid.
@@ -490,7 +490,31 @@ public class SpiderWeb<E> implements Cloneable{
             }
             this.nextIndex();
         }
-        throw new IllegalStateException("Failed to set element. Level: " + level + ", Index: " + index);
+        throw new IllegalStateException("Failed to get element. Level: " + level + ", Index: " + index);
+    }
+
+    /**
+     * Returns the SpiderWebNode at the specified level and index in the SpiderWeb.
+     *
+     * @param level The level of the desired SpiderWebNode (non-negative).
+     * @param index The index of the desired SpiderWebNode (non-negative).
+     * @return The SpiderWebNode at the specified level and index in the SpiderWeb.
+     *
+     * @throws IllegalArgumentException If the provided level or index is invalid.
+     * @throws IllegalStateException If the operation fails to get the SpiderWebNode, which should not occur under normal conditions.
+     */
+    public SpiderWebNode<E> getNode(int level, int index) {
+        if (!this.isValidLevelAndIndex(level, index)) {
+            throw new IllegalArgumentException("Invalid level or index. Level: " + level + ", Index: " + index);
+        }
+        this.resetTmpVariables();
+        for (SpiderWebNode<E> node = this.first; node != null; node = node.getNextNode()) {
+            if (this.tmpLevel == level && this.tmpIndex == index) {
+                return node;
+            }
+            this.nextIndex();
+        }
+        throw new IllegalStateException("Failed to get element. Level: " + level + ", Index: " + index);
     }
 
     /**
@@ -568,8 +592,7 @@ public class SpiderWeb<E> implements Cloneable{
         final E lastValue = this.last.getValue();
 
         if (prev == null) {
-            this.first = null;
-            this.last = null;
+            this.resetPointers();
         } else {
             this.last.setValue(null);
             prev.setNextNode(null);
@@ -589,11 +612,7 @@ public class SpiderWeb<E> implements Cloneable{
     public void clear() {
         for(SpiderWebNode<E> node = this.first; node != null; ) {
             SpiderWebNode<E> next = node.getNextNode();
-            node.setValue(null);
-            node.setPrevNode(null);
-            node.setNextNode(null);
-            node.setPrevLevelNode(null);
-            node.setNextLevelNode(null);
+            node.resetSpiderWebNode();
             node = next;
         }
 
