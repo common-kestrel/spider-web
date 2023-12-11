@@ -399,9 +399,11 @@ public class SpiderWebTest {
         spiderWeb.print();
         System.setOut(System.out);
 
-        String expectedOutput = "level: 0, index: 0, value: A\n" +
-                "level: 0, index: 1, value: B\n" +
-                "level: 1, index: 0, value: C\n";
+        String expectedOutput = """
+                level: 0, index: 0, value: A
+                level: 0, index: 1, value: B
+                level: 1, index: 0, value: C
+                """;
         assertEquals(expectedOutput, outContent.toString());
     }
 
