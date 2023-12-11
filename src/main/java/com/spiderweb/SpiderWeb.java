@@ -279,7 +279,7 @@ public class SpiderWeb<E> implements Cloneable{
         SpiderWebNode<E> current = this.first;
         this.resetTmpVariables();
         while (current != null){
-            System.out.println("value: " + current.getValue() + ", level: " + this.tmpLevel + ", index: " + this.tmpIndex);
+            System.out.println("level: " + this.tmpLevel + ", index: " + this.tmpIndex + ", value: " + current.getValue());
             current = current.getNextNode();
             this.nextIndex();
         }

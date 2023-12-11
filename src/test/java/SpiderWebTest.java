@@ -381,7 +381,7 @@ public class SpiderWebTest {
         spiderWeb.print();
         System.setOut(System.out);
 
-        assertEquals("value: A, level: 0, index: 0\n", outContent.toString());
+        assertEquals("level: 0, index: 0, value: A\n", outContent.toString());
     }
 
     /**
@@ -399,9 +399,9 @@ public class SpiderWebTest {
         spiderWeb.print();
         System.setOut(System.out);
 
-        String expectedOutput = "value: A, level: 0, index: 0\n" +
-                "value: B, level: 0, index: 1\n" +
-                "value: C, level: 1, index: 0\n";
+        String expectedOutput = "level: 0, index: 0, value: A\n" +
+                "level: 0, index: 1, value: B\n" +
+                "level: 1, index: 0, value: C\n";
         assertEquals(expectedOutput, outContent.toString());
     }
 
