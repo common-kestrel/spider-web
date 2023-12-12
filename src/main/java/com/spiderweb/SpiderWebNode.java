@@ -157,7 +157,7 @@ public class SpiderWebNode<E> {
     }
 
     /**
-     * Resets the SpiderWebNode, setting its value to null and resetting all pointers to null.
+     * Resets the SpiderWebNode, setting its value to null and resetting all references to null.
      */
     public void resetSpiderWebNode() {
         resetPointers();
