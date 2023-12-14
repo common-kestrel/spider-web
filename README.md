@@ -6,7 +6,7 @@ The SpiderWeb is a custom data structure designed to organize elements in a hier
 1. [Installation](#installation)
 2. [Usage](#usage)
 3. [Examples](#examples)
-4. [API Reference](#api-reference)
+4. [Documentation](#documentation)
 
 
 ## Installation
@@ -82,4 +82,4 @@ stringSpiderWeb.print();
 
 ## Documentation
 
-For detailed information about the classes and methods provided by the SpiderWeb Java Library, refer to the [API Reference](https://common-kestrel.github.io/spider-web/com/spiderweb/package-summary.html).
+For detailed information about the classes and methods provided by the SpiderWeb, refer to the [API Reference](https://common-kestrel.github.io/spider-web/com/spiderweb/package-summary.html).
